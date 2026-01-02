@@ -234,7 +234,7 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
 
 # ========== FAKE DATA ==========
 
-async def init_fake_data():
+# async def init_fake_data():
     """Initialize fake data if database is empty"""
     
     # Check if fake data already exists
@@ -465,22 +465,26 @@ async def get_categories():
 # ========== PRODUCT ENDPOINTS ==========
 
 @api_router.post("/products", response_model=Product)
-async def create_product(product_data: ProductCreate, authorization: Optional[str] = Header(None)):
+async def create_product(
+    product_data: ProductCreate,
+    authorization: Optional[str] = Header(None)
+):
+    """Create new product (vendor only)"""
+    
     current_user = await get_current_user(authorization)
-    
-    # Check if user is vendor
+
     if current_user["role"] != "vendor":
-        raise HTTPException(status_code=403, detail="Yalnız satıcılar məhsul əlavə edə bilər")
-    
-    # Get seller info
-    user = await db.users.find_one({"id": current_user["user_id"]}, {"_id": 0})
-    
-    # Create product
+        raise HTTPException(
+            status_code=403,
+            detail="Yalnız satıcılar məhsul əlavə edə bilər"
+        )
+
     product_id = str(uuid.uuid4())
+
     product_doc = {
         "id": product_id,
         "seller_id": current_user["user_id"],
-        "seller_name": user["store_name"],
+        "seller_name": current_user.get("storeName") or current_user.get("store_name"),
         "title": product_data.title,
         "description": product_data.description,
         "category": product_data.category,
@@ -490,24 +494,20 @@ async def create_product(product_data: ProductCreate, authorization: Optional[st
         "created_at": datetime.now(timezone.utc).isoformat(),
         "is_fake": False
     }
-    
+
     await db.products.insert_one(product_doc)
-    
-    # Create variants if provided
+
+    # Variants varsa
     if product_data.variants:
-        for variant_data in product_data.variants:
-            variant_id = str(uuid.uuid4())
-            variant_doc = {
-                "id": variant_id,
+        for var in product_data.variants:
+            await db.variants.insert_one({
+                "id": str(uuid.uuid4()),
                 "product_id": product_id,
-                "options": variant_data.get("options", []),
-                "price": variant_data.get("price", product_data.base_price),
-                "stock": variant_data.get("stock", 0),
-                "sku": variant_data.get("sku")
-            }
-            await db.variants.insert_one(variant_doc)
-    
+                **var
+            })
+
     return Product(**product_doc)
+
 
 @api_router.get("/products")
 async def get_products(category: Optional[str] = None, search: Optional[str] = None):
@@ -724,7 +724,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
-    # await init_fake_data()
+
     logger.info("Bazarchi API started successfully")
 
 @app.on_event("shutdown")

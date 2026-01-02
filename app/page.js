@@ -222,7 +222,7 @@ function AppProvider({ children }) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       ...product,
-      sellerName: user.storeName
+    
     })
   })
 
