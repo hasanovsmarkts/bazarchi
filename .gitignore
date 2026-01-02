@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# env
+.env
+.env.local
+
+# next
+.next/
+out/
+
+# python
+venv/
+__pycache__/
+*.pyc
+
+# logs
+*.log

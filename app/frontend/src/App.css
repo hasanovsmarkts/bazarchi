@@ -1,0 +1,71 @@
+.App {
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Product card hover effect */
+.product-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Loading animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
