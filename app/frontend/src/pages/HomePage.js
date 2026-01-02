@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from "next/navigation";
 import { useApp } from '../context/AppContext';
 import Header from '../components/Header';
 import ProductCard from '../../../../components/ProductCard';
@@ -10,7 +10,7 @@ import { Input } from '../components/ui/input';
 const CATEGORIES = ['Hamısı', 'Elektronika', 'Geyim və Ayaqqabı', 'Ev və Bağ'];
 
 const HomePage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { filteredProducts, selectedCategory, setSelectedCategory, setSearchQuery } = useApp();
 
   return (

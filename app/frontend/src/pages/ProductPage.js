@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useRouter } from "next/navigation";
 import { useApp } from '../context/AppContext';
 import Header from '../components/Header';
 import { Button } from '../components/ui/button';
@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 
 const ProductPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { addToCart } = useApp();
   const [product, setProduct] = useState(null);
   const [variants, setVariants] = useState([]);
@@ -154,7 +154,7 @@ const ProductPage = () => {
               data-testid="add-to-cart-button"
               onClick={() => {
                 addToCart(product, selectedVariant);
-                navigate('/cart');
+                router.push('/cart');
               }}
               size="lg"
               className="w-full bg-accent hover:bg-accent/90 text-lg py-6 transition-all"

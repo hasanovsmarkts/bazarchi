@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useApp } from '../context/AppContext';
 import Header from '../components/Header';
 import { Card, CardContent, CardHeader } from '../components/ui/card';
@@ -9,7 +9,7 @@ import { paymentsAPI } from '../../../../services/api';
 import { toast } from 'sonner';
 
 const OrderSuccessPage = () => {
-  const navigate = useNavigate();
+const router = useRouter();
   const [searchParams] = useSearchParams();
   const { clearCart } = useApp();
   const [status, setStatus] = useState('checking'); // checking, success, failed
@@ -20,7 +20,7 @@ const OrderSuccessPage = () => {
 
   useEffect(() => {
     if (!sessionId) {
-      navigate('/cart');
+      router.push('/cart');
       return;
     }
 
@@ -113,7 +113,7 @@ const OrderSuccessPage = () => {
                 </p>
                 <Button
                   data-testid="retry-button"
-                  onClick={() => navigate('/cart')}
+                  onClick={() => router.push('/cart')}
                   className="bg-accent hover:bg-accent/90"
                 >
                   Səbətə qayıt

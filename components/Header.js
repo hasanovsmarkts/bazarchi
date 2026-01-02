@@ -10,7 +10,7 @@ import AuthDialog from "@/components/AuthDialog";
 
 
 const Header = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user, logout, cart, cartCount, setSearchQuery } = useApp();
   const [authOpen, setAuthOpen] = useState(false);
 
@@ -49,7 +49,7 @@ const Header = () => {
                   <Button
                     data-testid="vendor-panel-button"
                     variant="outline"
-                    onClick={() => navigate('/vendor')}
+                    onClick={() => router.push('/vendor')}
                     className="gap-2"
                   >
                     <Package className="h-4 w-4" />
@@ -92,7 +92,7 @@ const Header = () => {
             <Button
               data-testid="cart-button"
               variant="outline"
-              onClick={() => navigate('/cart')}
+              onClick={() => router.push('/cart')}
               className="gap-2 relative"
             >
               <ShoppingCart className="h-4 w-4" />

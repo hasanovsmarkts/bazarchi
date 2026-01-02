@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
@@ -50,7 +51,7 @@ const VendorDashboard = () => {
   useEffect(() => {
     if (!user || user.role !== 'vendor') {
      router.push('/');
-      return;
+     
     }
     loadVendorData();
   }, [user]);

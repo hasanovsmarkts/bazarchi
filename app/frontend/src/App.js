@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 import { AppProvider } from './context/AppContext';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -20,7 +20,6 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/vendor" element={<VendorDashboard />} />
             <Route path="/order-success" element={<OrderSuccessPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <Toaster position="top-right" />
         </div>

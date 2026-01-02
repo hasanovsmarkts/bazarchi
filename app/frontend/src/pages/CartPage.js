@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from "next/navigation";
 import { useApp } from '../context/AppContext';
 import Header from '../components/Header';
 import { Button } from '../components/ui/button';
@@ -12,7 +12,7 @@ import { ordersAPI, paymentsAPI } from '../../../../services/api';
 import { toast } from 'sonner';
 
 const CartPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user, cart, cartTotal, updateCartQuantity, removeFromCart, clearCart } = useApp();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [checkoutData, setCheckoutData] = useState({

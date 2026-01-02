@@ -1,18 +1,16 @@
-# dependencies
-node_modules/
+# Next.js
+.next
+out
 
-# env
+# Env
 .env
 .env.local
+.env.production
 
-# next
-.next/
-out/
+# Node
+node_modules
 
-# python
-venv/
-__pycache__/
-*.pyc
-
-# logs
-*.log
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
