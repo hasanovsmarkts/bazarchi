@@ -61,7 +61,7 @@ const HomePage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" data-testid="products-grid">
             {filteredProducts.map(product => (
               <ProductCard
-                key={product.id}
+                key={product._id}
                 product={product}
                 onClick={() => router.push(`/product/${product.id}`)}
               />

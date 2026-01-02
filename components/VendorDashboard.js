@@ -280,7 +280,7 @@ const VendorDashboard = () => {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {myProducts.map((product) => (
-                  <Card key={product.id} className="border-border" data-testid={`product-item-${product.id}`}>
+                  <Card key={product._id} className="border-border" data-testid={`product-item-${product.id}`}>
                     <div className="aspect-square overflow-hidden bg-secondary">
                       <img
                         src={product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'}
@@ -331,7 +331,7 @@ const VendorDashboard = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleDeleteProduct(product.id)}
+                        onClick={() => handleDeleteProduct(product._id)}
                         data-testid={`delete-product-${product.id}`}
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />

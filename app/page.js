@@ -22,149 +22,154 @@ const useAppContext = () => {
 }
 
 // Fake initial products
-const FAKE_PRODUCTS = [
-  {
-    id: '1',
-    title: 'Samsung Galaxy S24 Ultra',
-    price: 2599,
-    discountPrice: 2299,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&q=80',
-    sellerName: 'TechStore AZ',
-    isFake: true
-  },
-  {
-    id: '2',
-    title: 'Apple MacBook Air M3',
-    price: 3999,
-    discountPrice: 3699,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
-    sellerName: 'Apple Premium',
-    isFake: true
-  },
-  {
-    id: '3',
-    title: 'Nike Air Max 2024',
-    price: 299,
-    discountPrice: 249,
-    category: 'Geyim və Ayaqqabı',
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
-    sellerName: 'Sport World',
-    isFake: true
-  },
-  {
-    id: '4',
-    title: 'Adidas Ultraboost',
-    price: 349,
-    discountPrice: 299,
-    category: 'Geyim və Ayaqqabı',
-    image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=80',
-    sellerName: 'Sport World',
-    isFake: true
-  },
-  {
-    id: '5',
-    title: 'Sony PlayStation 5',
-    price: 1599,
-    discountPrice: 1499,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&q=80',
-    sellerName: 'GameZone',
-    isFake: true
-  },
-  {
-    id: '6',
-    title: 'Dyson V15 Detect',
-    price: 1299,
-    discountPrice: 1099,
-    category: 'Ev və Bağ',
-    image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=500&q=80',
-    sellerName: 'Home Tech',
-    isFake: true
-  },
-  {
-    id: '7',
-    title: 'Canon EOS R6',
-    price: 4299,
-    discountPrice: 3999,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
-    sellerName: 'Photo Pro',
-    isFake: true
-  },
-  {
-    id: '8',
-    title: 'Zara Palto',
-    price: 199,
-    discountPrice: 149,
-    category: 'Geyim və Ayaqqabı',
-    image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=500&q=80',
-    sellerName: 'Fashion Store',
-    isFake: true
-  },
-  {
-    id: '9',
-    title: 'Apple AirPods Pro 2',
-    price: 699,
-    discountPrice: 599,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500&q=80',
-    sellerName: 'Apple Premium',
-    isFake: true
-  },
-  {
-    id: '10',
-    title: 'Tefal Multicooker',
-    price: 399,
-    discountPrice: 349,
-    category: 'Ev və Bağ',
-    image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&q=80',
-    sellerName: 'Home Tech',
-    isFake: true
-  },
-  {
-    id: '11',
-    title: 'Gucci Çanta',
-    price: 2999,
-    discountPrice: 2699,
-    category: 'Geyim və Ayaqqabı',
-    image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&q=80',
-    sellerName: 'Luxury Boutique',
-    isFake: true
-  },
-  {
-    id: '12',
-    title: 'LG OLED TV 55"',
-    price: 3299,
-    discountPrice: 2999,
-    category: 'Elektronika',
-    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&q=80',
-    sellerName: 'TechStore AZ',
-    isFake: true
-  }
-]
+// const FAKE_PRODUCTS = [
+//   {
+//     id: '1',
+//     title: 'Samsung Galaxy S24 Ultra',
+//     price: 2599,
+//     discountPrice: 2299,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&q=80',
+//     sellerName: 'TechStore AZ',
+//     isFake: true
+//   },
+//   {
+//     id: '2',
+//     title: 'Apple MacBook Air M3',
+//     price: 3999,
+//     discountPrice: 3699,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
+//     sellerName: 'Apple Premium',
+//     isFake: true
+//   },
+//   {
+//     id: '3',
+//     title: 'Nike Air Max 2024',
+//     price: 299,
+//     discountPrice: 249,
+//     category: 'Geyim və Ayaqqabı',
+//     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
+//     sellerName: 'Sport World',
+//     isFake: true
+//   },
+//   {
+//     id: '4',
+//     title: 'Adidas Ultraboost',
+//     price: 349,
+//     discountPrice: 299,
+//     category: 'Geyim və Ayaqqabı',
+//     image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=80',
+//     sellerName: 'Sport World',
+//     isFake: true
+//   },
+//   {
+//     id: '5',
+//     title: 'Sony PlayStation 5',
+//     price: 1599,
+//     discountPrice: 1499,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&q=80',
+//     sellerName: 'GameZone',
+//     isFake: true
+//   },
+//   {
+//     id: '6',
+//     title: 'Dyson V15 Detect',
+//     price: 1299,
+//     discountPrice: 1099,
+//     category: 'Ev və Bağ',
+//     image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=500&q=80',
+//     sellerName: 'Home Tech',
+//     isFake: true
+//   },
+//   {
+//     id: '7',
+//     title: 'Canon EOS R6',
+//     price: 4299,
+//     discountPrice: 3999,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
+//     sellerName: 'Photo Pro',
+//     isFake: true
+//   },
+//   {
+//     id: '8',
+//     title: 'Zara Palto',
+//     price: 199,
+//     discountPrice: 149,
+//     category: 'Geyim və Ayaqqabı',
+//     image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=500&q=80',
+//     sellerName: 'Fashion Store',
+//     isFake: true
+//   },
+//   {
+//     id: '9',
+//     title: 'Apple AirPods Pro 2',
+//     price: 699,
+//     discountPrice: 599,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500&q=80',
+//     sellerName: 'Apple Premium',
+//     isFake: true
+//   },
+//   {
+//     id: '10',
+//     title: 'Tefal Multicooker',
+//     price: 399,
+//     discountPrice: 349,
+//     category: 'Ev və Bağ',
+//     image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&q=80',
+//     sellerName: 'Home Tech',
+//     isFake: true
+//   },
+//   {
+//     id: '11',
+//     title: 'Gucci Çanta',
+//     price: 2999,
+//     discountPrice: 2699,
+//     category: 'Geyim və Ayaqqabı',
+//     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&q=80',
+//     sellerName: 'Luxury Boutique',
+//     isFake: true
+//   },
+//   {
+//     id: '12',
+//     title: 'LG OLED TV 55"',
+//     price: 3299,
+//     discountPrice: 2999,
+//     category: 'Elektronika',
+//     image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&q=80',
+//     sellerName: 'TechStore AZ',
+//     isFake: true
+//   }
+// ]
 
 const CATEGORIES = ['Hamısı', 'Elektronika', 'Geyim və Ayaqqabı', 'Ev və Bağ']
 // AppProvider Component
 function AppProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [products, setProducts] = useState(FAKE_PRODUCTS)
+ const [products, setProducts] = useState([])
+
   const [cart, setCart] = useState([])
   const [currentPage, setCurrentPage] = useState('home')
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('Hamısı')
   const [searchQuery, setSearchQuery] = useState('')
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    const savedProducts = localStorage.getItem('products')
-    const savedCart = localStorage.getItem('cart')
-    
-    if (savedUser) setUser(JSON.parse(savedUser))
-    if (savedProducts) setProducts(JSON.parse(savedProducts))
-    if (savedCart) setCart(JSON.parse(savedCart))
-  }, [])
+ useEffect(() => {
+ fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
+
+    .then(res => res.json())
+    .then(data => {
+      setProducts(data.products || [])
+    })
+    .catch(err => {
+      console.error('Products fetch error:', err)
+      toast.error('Məhsulları yükləmək alınmadı')
+    })
+}, [])
+
 
   const login = (email, password) => {
     const users = JSON.parse(localStorage.getItem('users') || '[]')
@@ -211,18 +216,28 @@ function AppProvider({ children }) {
     toast.success('Hesabdan çıxış edildi')
   }
 
-  const addProduct = (product) => {
-    const newProduct = {
+ const addProduct = async (product) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       ...product,
-      id: Date.now().toString(),
-      sellerName: user.storeName,
-      isFake: false
-    }
-    const updatedProducts = [...products, newProduct]
-    setProducts(updatedProducts)
-    localStorage.setItem('products', JSON.stringify(updatedProducts))
-    toast.success('Məhsul əlavə edildi!')
+      sellerName: user.storeName
+    })
+  })
+
+  if (!res.ok) {
+    toast.error('Məhsul əlavə olunmadı')
+    return
   }
+
+  toast.success('Məhsul əlavə edildi')
+
+  const refreshed = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
+  setProducts(await refreshed.json())
+}
+
+
 
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.id === product.id)
@@ -267,12 +282,17 @@ function AppProvider({ children }) {
     localStorage.removeItem('cart')
   }
 
-  const deleteProduct = (productId) => {
-    const updatedProducts = products.filter(p => p.id !== productId)
-    setProducts(updatedProducts)
-    localStorage.setItem('products', JSON.stringify(updatedProducts))
-    toast.success('Məhsul silindi')
-  }
+  const deleteProduct = async (id) => {
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
+    method: 'DELETE'
+  })
+
+  toast.success('Məhsul silindi')
+
+  const refreshed = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
+  setProducts(await refreshed.json())
+}
+
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'Hamısı' || product.category === selectedCategory
@@ -925,7 +945,7 @@ function VendorDashboard() {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {myProducts.map(product => (
-                  <Card key={product.id}>
+                  <Card key={product._id}>
                     <div className="aspect-square overflow-hidden bg-gray-100">
                       <img
                         src={product.image}
@@ -950,7 +970,7 @@ function VendorDashboard() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteProduct(product.id)}
+                          onClick={() => deleteProduct(product._id)}
                         >
                           <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>

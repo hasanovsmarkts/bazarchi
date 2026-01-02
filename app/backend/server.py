@@ -13,6 +13,28 @@ from datetime import datetime, timezone, timedelta
 from passlib.context import CryptContext
 import jwt
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException
+from bson import ObjectId
+from fastapi import FastAPI
+from motor.motor_asyncio import AsyncIOMotorClient
+import os
+load_dotenv()
+app = FastAPI()
+MONGO_URL = os.getenv("MONGO_URL")
+DB_NAME = os.getenv("DB_NAME")
+
+if not MONGO_URL:
+    raise RuntimeError("MONGO_URL .env-də tapılmadı")
+
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
+# collections
+products_collection = db["products"]
+users_collection = db["users"]
+orders_collection = db["orders"]
+products_collection = db["products"]
+variants_collection = db["variants"]
 
 
 
@@ -702,7 +724,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
-    await init_fake_data()
+    # await init_fake_data()
     logger.info("Bazarchi API started successfully")
 
 @app.on_event("shutdown")
