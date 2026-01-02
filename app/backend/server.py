@@ -14,13 +14,6 @@ from passlib.context import CryptContext
 import jwt
 from fastapi.middleware.cors import CORSMiddleware
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 ROOT_DIR = Path(__file__).parent
@@ -43,6 +36,13 @@ JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
 
 # Create the main app
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
