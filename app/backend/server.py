@@ -464,7 +464,7 @@ async def get_categories():
 
 # ========== PRODUCT ENDPOINTS ==========
 
-@api_router.post("/products", response_model=Product)
+@api_router.post("/products")
 async def create_product(
     product_data: ProductCreate,
     authorization: Optional[str] = Header(None)
@@ -506,7 +506,7 @@ async def create_product(
                 **var
             })
 
-    return Product(**product_doc)
+        return product_doc
 
 
 @api_router.get("/products")

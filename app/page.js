@@ -237,35 +237,42 @@ function AppProvider({ children }) {
   }
 
 const addProduct = async (product) => {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    toast.error("Yenidən login ol")
+    return
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
         title: product.title,
-        description: product.description,
+        description: product.description || null,
         category: product.category,
-        base_price: Number(product.price),
+        base_price: Number(product.price || product.base_price),
         discount_price: product.discountPrice
           ? Number(product.discountPrice)
           : null,
-        images: product.images || []
-      })
+        images: Array.isArray(product.images) ? product.images : [],
+        variants: [],
+      }),
     }
   )
 
   if (!res.ok) {
-    const err = await res.text()
-    console.error(err)
-    toast.error('Məhsul əlavə olunmadı')
+    console.error(await res.text())
+    toast.error("Məhsul əlavə olunmadı")
     return
   }
 
-  toast.success('Məhsul əlavə edildi')
+  toast.success("Məhsul əlavə edildi")
 
   const refreshed = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/products`
@@ -273,6 +280,9 @@ const addProduct = async (product) => {
   const data = await refreshed.json()
   setProducts(data.products)
 }
+print("AUTH:", authorization)
+print("DATA:", product_data)
+
 
 
 
