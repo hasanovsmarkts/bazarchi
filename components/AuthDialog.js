@@ -19,7 +19,7 @@ const AuthDialog = ({ onClose }) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  console.log("LOGIN CLICKED"); // 🔥 BURA
+console.log("SUBMIT CLICKED, MODE:", mode);
 
   let success = false;
   if (mode === 'login') {
