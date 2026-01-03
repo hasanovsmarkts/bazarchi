@@ -283,8 +283,7 @@ console.log("CATEGORY:", product.category)
   const data = await refreshed.json()
   setProducts(data.products)
 }
-print("AUTH:", authorization)
-print("DATA:", product_data)
+
 
 
 
