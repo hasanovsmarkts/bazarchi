@@ -238,6 +238,8 @@ function AppProvider({ children }) {
 
 const addProduct = async (product) => {
   const token = localStorage.getItem("token")
+console.log("TOKEN:", token)
+console.log("CATEGORY:", product.category)
 
   if (!token) {
     toast.error("Yenidən login ol")
@@ -254,7 +256,8 @@ const addProduct = async (product) => {
       },
       body: JSON.stringify({
         title: product.title,
-        description: product.description || null,
+    description: product.description || "",
+
         category: product.category,
         base_price: Number(product.price || product.base_price),
         discount_price: product.discountPrice
