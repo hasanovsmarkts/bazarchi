@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from passlib.context import CryptContext
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone, timedelta
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from pathlib import Path
 import jwt
 import uuid
