@@ -197,6 +197,7 @@ const CartPage = () => {
                   <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
                     <DialogTrigger asChild>
                       <Button
+                        type="submit"
                         data-testid="checkout-button"
                         className="w-full bg-accent hover:bg-accent/90"
                         size="lg"
@@ -256,6 +257,7 @@ const CartPage = () => {
                           />
                         </div>
                         <Button
+                        
                           data-testid="confirm-checkout-button"
                           type="submit"
                           className="w-full bg-accent hover:bg-accent/90"

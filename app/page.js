@@ -580,7 +580,7 @@ function AuthDialog({ mode, setMode, onClose }) {
             <>
               Artıq hesabınız var?{' '}
               <button
-                type="button"
+                type="submit"
                 onClick={() => setMode('login')}
                 className="text-orange-500 hover:underline"
               >
