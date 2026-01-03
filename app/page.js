@@ -171,19 +171,39 @@ function AppProvider({ children }) {
 }, [])
 
 
-  const login = (email, password) => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
-    const foundUser = users.find(u => u.email === email && u.password === password)
-    
-    if (foundUser) {
-      setUser(foundUser)
-      localStorage.setItem('user', JSON.stringify(foundUser))
-      toast.success('Uğurla daxil oldunuz!')
-      return true
+ const login = async (email, password) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    )
+
+    if (!res.ok) {
+      toast.error("Email və ya şifrə yanlışdır")
+      return false
     }
-    toast.error('Email və ya şifrə yanlışdır')
+
+    const data = await res.json()
+
+    // ✅ ƏN VACİB YER
+    localStorage.setItem("token", data.token)
+    localStorage.setItem("user", JSON.stringify(data.user))
+
+    setUser(data.user)
+
+    toast.success("Uğurla daxil oldunuz!")
+    return true
+  } catch (err) {
+    console.error(err)
+    toast.error("Server xətası")
     return false
   }
+}
+
 
   const register = (email, password, role, storeName = '') => {
     const users = JSON.parse(localStorage.getItem('users') || '[]')
@@ -216,26 +236,44 @@ function AppProvider({ children }) {
     toast.success('Hesabdan çıxış edildi')
   }
 
- const addProduct = async (product) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      ...product,
-    
-    })
-  })
+const addProduct = async (product) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        title: product.title,
+        description: product.description,
+        category: product.category,
+        base_price: Number(product.price),
+        discount_price: product.discountPrice
+          ? Number(product.discountPrice)
+          : null,
+        images: product.images || []
+      })
+    }
+  )
 
   if (!res.ok) {
+    const err = await res.text()
+    console.error(err)
     toast.error('Məhsul əlavə olunmadı')
     return
   }
 
   toast.success('Məhsul əlavə edildi')
 
-  const refreshed = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`)
-  setProducts(await refreshed.json())
+  const refreshed = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products`
+  )
+  const data = await refreshed.json()
+  setProducts(data.products)
 }
+
 
 
 

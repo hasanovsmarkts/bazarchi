@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://127.0.0.1:8000';
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+
 
 
 
@@ -51,9 +53,9 @@ export const vendorAPI = {
   getStats: () => api.get('/api/vendor/stats'),
 };
 
-export const paymentsAPI = {
-  createCheckoutSession: (data) => api.post('/api/checkout/session', data),
-  getCheckoutStatus: (sessionId) => api.get(`/api/checkout/status/${sessionId}`),
-};
+// export const paymentsAPI = {
+//   createCheckoutSession: (data) => api.post('/api/checkout/session', data),
+//   getCheckoutStatus: (sessionId) => api.get(`/api/checkout/status/${sessionId}`),
+// };
 
 export default api;
