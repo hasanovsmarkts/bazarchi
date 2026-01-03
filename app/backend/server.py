@@ -395,8 +395,7 @@ async def register(user_data: UserRegister):
         "store_name": user_data.store_name if user_data.role == "vendor" else None,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
-    
-    await db.users.insert_one(user_doc)
+    await users_collection.insert_one(user_doc)
     
     # Create JWT token
     token = create_jwt_token(user_id, user_data.email, user_data.role)
