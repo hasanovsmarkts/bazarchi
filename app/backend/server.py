@@ -1,70 +1,63 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Request, Header
-from fastapi.responses import JSONResponse
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, APIRouter, HTTPException, Header
+from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+from dotenv import load_dotenv
+from passlib.context import CryptContext
+from typing import List, Optional, Dict, Any
+from datetime import datetime, timezone, timedelta
+from pydantic import BaseModel, EmailStr
+from pathlib import Path
+import jwt
+import uuid
 import os
 import logging
-from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List, Optional, Dict, Any
-import uuid
-from datetime import datetime, timezone, timedelta
-from passlib.context import CryptContext
-import jwt
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, HTTPException
-from bson import ObjectId
-from fastapi import FastAPI
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
-load_dotenv()
-app = FastAPI()
+
+# ================== ENV ==================
+BASE_DIR = Path(__file__).resolve().parent
+load_dotenv(BASE_DIR / ".env")
+
 MONGO_URL = os.getenv("MONGO_URL")
 DB_NAME = os.getenv("DB_NAME")
 
-if not MONGO_URL:
-    raise RuntimeError("MONGO_URL .env-də tapılmadı")
+if not MONGO_URL or not DB_NAME:
+    raise RuntimeError("MONGO_URL və ya DB_NAME .env-də tapılmadı")
 
-client = AsyncIOMotorClient(MONGO_URL)
-db = client[DB_NAME]
-
-# collections
-products_collection = db["products"]
-users_collection = db["users"]
-orders_collection = db["orders"]
-products_collection = db["products"]
-variants_collection = db["variants"]
-
-
-
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# JWT secret
-JWT_SECRET = os.environ.get("JWT_SECRET", "your-secret-key-change-in-production")
-JWT_ALGORITHM = "HS256"
-JWT_EXPIRATION_HOURS = 24 * 7  # 7 days
-
-
-
-# Create the main app
+# ================== APP ==================
 app = FastAPI()
+
+# ================== CORS ==================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "https://bazarchi-three.vercel.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ================== DB ==================
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
+products_collection = db["products"]
+users_collection = db["users"]
+orders_collection = db["orders"]
+variants_collection = db["variants"]
+
+# ================== AUTH ==================
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+JWT_SECRET = os.getenv("JWT_SECRET", "change-this-secret")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRATION_HOURS = 24 * 7
+
+# ================== LOGGER ==================
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -484,7 +477,7 @@ async def create_product(
     product_doc = {
         "id": product_id,
         "seller_id": current_user["user_id"],
-        "seller_name": current_user.get("storeName") or current_user.get("store_name"),
+        "seller_name": current_user.get("store_name"),
         "title": product_data.title,
         "description": product_data.description,
         "category": product_data.category,
@@ -497,16 +490,7 @@ async def create_product(
 
     await db.products.insert_one(product_doc)
 
-    # Variants varsa
-    if product_data.variants:
-        for var in product_data.variants:
-            await db.variants.insert_one({
-                "id": str(uuid.uuid4()),
-                "product_id": product_id,
-                **var
-            })
-
-        return product_doc
+   
 
 
 @api_router.get("/products")
@@ -576,7 +560,7 @@ async def update_product(product_id: str, product_data: ProductCreate, authoriza
     )
     
     product = Product(**update_data)
-    
+    await db.variants.delete_many({"product_id": product_id}) 
     # Handle variants if provided
     if product_data.variants:
         # Delete old variants
@@ -714,13 +698,7 @@ async def root():
 # Include the router in the main app
 app.include_router(api_router)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 
 @app.on_event("startup")
 async def startup_event():
