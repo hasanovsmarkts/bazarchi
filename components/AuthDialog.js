@@ -16,20 +16,27 @@ const AuthDialog = ({ onClose }) => {
     store_name: '',
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    let success = false;
-    if (mode === 'login') {
-      success = await login(formData.email, formData.password);
-    } else {
-      success = await register(formData);
-    }
+  console.log("LOGIN CLICKED"); // 🔥 BURA
 
-    if (success) {
-      onClose();
-    }
-  };
+  let success = false;
+  if (mode === 'login') {
+    console.log("LOGIN MODE", formData.email, formData.password); // əlavə debug
+    success = await login(formData.email, formData.password);
+  } else {
+    console.log("REGISTER MODE", formData);
+    success = await register(formData);
+  }
+
+  console.log("SUCCESS:", success);
+
+  if (success) {
+    onClose();
+  }
+};
+
 
   return (
     <>
