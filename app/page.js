@@ -48,7 +48,7 @@ const useAppContext = () => {
 //     id: '1',
 //     title: 'Samsung Galaxy S24 Ultra',
 //     price: 2599,
-//     discountPrice: 2299,
+//     discount_price: 2299,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&q=80',
 //     sellerName: 'TechStore AZ',
@@ -58,7 +58,7 @@ const useAppContext = () => {
 //     id: '2',
 //     title: 'Apple MacBook Air M3',
 //     price: 3999,
-//     discountPrice: 3699,
+//     discount_price: 3699,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
 //     sellerName: 'Apple Premium',
@@ -68,7 +68,7 @@ const useAppContext = () => {
 //     id: '3',
 //     title: 'Nike Air Max 2024',
 //     price: 299,
-//     discountPrice: 249,
+//     discount_price: 249,
 //     category: 'Geyim və Ayaqqabı',
 //     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
 //     sellerName: 'Sport World',
@@ -78,7 +78,7 @@ const useAppContext = () => {
 //     id: '4',
 //     title: 'Adidas Ultraboost',
 //     price: 349,
-//     discountPrice: 299,
+//     discount_price: 299,
 //     category: 'Geyim və Ayaqqabı',
 //     image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500&q=80',
 //     sellerName: 'Sport World',
@@ -88,7 +88,7 @@ const useAppContext = () => {
 //     id: '5',
 //     title: 'Sony PlayStation 5',
 //     price: 1599,
-//     discountPrice: 1499,
+//     discount_price: 1499,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&q=80',
 //     sellerName: 'GameZone',
@@ -98,7 +98,7 @@ const useAppContext = () => {
 //     id: '6',
 //     title: 'Dyson V15 Detect',
 //     price: 1299,
-//     discountPrice: 1099,
+//     discount_price: 1099,
 //     category: 'Ev və Bağ',
 //     image: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=500&q=80',
 //     sellerName: 'Home Tech',
@@ -108,7 +108,7 @@ const useAppContext = () => {
 //     id: '7',
 //     title: 'Canon EOS R6',
 //     price: 4299,
-//     discountPrice: 3999,
+//     discount_price: 3999,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
 //     sellerName: 'Photo Pro',
@@ -118,7 +118,7 @@ const useAppContext = () => {
 //     id: '8',
 //     title: 'Zara Palto',
 //     price: 199,
-//     discountPrice: 149,
+//     discount_price: 149,
 //     category: 'Geyim və Ayaqqabı',
 //     image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=500&q=80',
 //     sellerName: 'Fashion Store',
@@ -128,7 +128,7 @@ const useAppContext = () => {
 //     id: '9',
 //     title: 'Apple AirPods Pro 2',
 //     price: 699,
-//     discountPrice: 599,
+//     discount_price: 599,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500&q=80',
 //     sellerName: 'Apple Premium',
@@ -138,7 +138,7 @@ const useAppContext = () => {
 //     id: '10',
 //     title: 'Tefal Multicooker',
 //     price: 399,
-//     discountPrice: 349,
+//     discount_price: 349,
 //     category: 'Ev və Bağ',
 //     image: 'https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&q=80',
 //     sellerName: 'Home Tech',
@@ -148,7 +148,7 @@ const useAppContext = () => {
 //     id: '11',
 //     title: 'Gucci Çanta',
 //     price: 2999,
-//     discountPrice: 2699,
+//     discount_price: 2699,
 //     category: 'Geyim və Ayaqqabı',
 //     image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&q=80',
 //     sellerName: 'Luxury Boutique',
@@ -158,7 +158,7 @@ const useAppContext = () => {
 //     id: '12',
 //     title: 'LG OLED TV 55"',
 //     price: 3299,
-//     discountPrice: 2999,
+//     discount_price: 2999,
 //     category: 'Elektronika',
 //     image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&q=80',
 //     sellerName: 'TechStore AZ',
@@ -291,8 +291,8 @@ function AppProvider({ children }) {
 
         category: product.category,
         base_price: Number(product.base_price || product.base_price),
-        discount_price: product.discountPrice
-          ? Number(product.discountPrice)
+        discount_price: product.discount_price
+          ? Number(product.discount_price)
           : null,
         images: (product.images || []).filter(img => img.trim() !== ''),
 
@@ -679,10 +679,10 @@ function ProductCard({ product, onViewDetails }) {
           {product.title}
         </h3>
         <div className="flex items-baseline gap-2">
-          {product.discountPrice ? (
+          {product.discount_price ? (
             <>
               <span className="text-lg font-bold text-orange-500">
-                {product.discountPrice} ₼
+                {product.discount_price} ₼
               </span>
               <span className="text-sm text-gray-400 line-through">
                 {product.base_price} ₼
@@ -1040,7 +1040,7 @@ function VendorDashboard() {
   const [newProduct, setNewProduct] = useState({
     title: "",
     price: "",
-    discountPrice: "",
+    discount_price: "",
     category: "Elektronika",
     images: [],
   });
@@ -1056,8 +1056,8 @@ function VendorDashboard() {
  addProduct({
   title: newProduct.title,
   price: parseFloat(newProduct.base_price),
-  discountPrice: newProduct.discountPrice
-    ? parseFloat(newProduct.discountPrice)
+  discount_price: newProduct.discount_price
+    ? parseFloat(newProduct.discount_price)
     : null,
   category: newProduct.category,
   images:
@@ -1070,7 +1070,7 @@ function VendorDashboard() {
     setNewProduct({
       title: "",
       price: "",
-      discountPrice: "",
+      discount_price: "",
       category: "Elektronika",
       images: [],
     });
@@ -1133,10 +1133,10 @@ function VendorDashboard() {
                       </p>
                       <div className="flex items-center justify-between">
                         <div>
-                          {product.discountPrice ? (
+                          {product.discount_price ? (
                             <>
                               <span className="font-bold text-orange-500">
-                                {product.discountPrice} ₼
+                                {product.discount_price} ₼
                               </span>
                               <span className="text-sm text-gray-400 line-through ml-2">
                                 {product.base_price} ₼
@@ -1202,11 +1202,11 @@ function VendorDashboard() {
                       <Input
                         type="number"
                         step="0.01"
-                        value={newProduct.discountPrice}
+                        value={newProduct.discount_price}
                         onChange={(e) =>
                           setNewProduct({
                             ...newProduct,
-                            discountPrice: e.target.value,
+                            discount_price: e.target.value,
                           })
                         }
                         placeholder="249.99"

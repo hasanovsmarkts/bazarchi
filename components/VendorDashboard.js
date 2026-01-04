@@ -84,7 +84,7 @@ const [newProduct, setNewProduct] = useState(EMPTY_PRODUCT);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    
+    const price = Number(newProduct.base_price);
   if (!newProduct.title.trim() || isNaN(price) || price <= 0) {
     toast.error("Məhsul adı və qiyməti düzgün daxil edin");
     return;
