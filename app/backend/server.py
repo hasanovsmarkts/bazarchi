@@ -12,12 +12,16 @@ import uuid
 import os
 import logging
 
+
 # ================== ENV ==================
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
 MONGO_URL = os.getenv("MONGO_URL")
 DB_NAME = os.getenv("DB_NAME")
+print("🔥 BACKEND STARTED FROM:", __file__)
+print("🔥 MONGO_URL:", MONGO_URL)
+print("🔥 DB_NAME:", DB_NAME)
 
 if not MONGO_URL or not DB_NAME:
     raise RuntimeError("MONGO_URL və ya DB_NAME .env-də tapılmadı")
@@ -41,6 +45,7 @@ app.add_middleware(
 # ================== DB ==================
 client = AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
+print("MongoDB connected")
 
 products_collection = db["products"]
 users_collection = db["users"]
@@ -192,10 +197,16 @@ CATEGORY_VARIANTS = {
 # ========== HELPER FUNCTIONS ==========
 
 def hash_password(password: str) -> str:
+    password = password.strip()
+    password = password[:72]
     return pwd_context.hash(password)
 
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    plain_password = plain_password.strip()
+    plain_password = plain_password[:72]  # bcrypt limiti
     return pwd_context.verify(plain_password, hashed_password)
+
 
 def create_jwt_token(user_id: str, email: str, role: str) -> str:
     payload = {
@@ -376,15 +387,22 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
 
 @api_router.post("/auth/register", response_model=AuthResponse)
 async def register(user_data: UserRegister):
+
+    # 🔥 BU ƏN BAŞDA OLMALIDIR
+    print("🔥 REGISTER ENDPOINT HIT")
+    print("🔥 EMAIL:", user_data.email)
+
     # Check if user exists
-    existing_user = await db.users.find_one({"email": user_data.email}, {"_id": 0})
+    existing_user = await users_collection.find_one(
+        {"email": user_data.email}
+    )
     if existing_user:
         raise HTTPException(status_code=400, detail="Bu email artıq qeydiyyatdan keçib")
-    
+
     # Validate vendor store name
     if user_data.role == "vendor" and not user_data.store_name:
         raise HTTPException(status_code=400, detail="Satıcı üçün mağaza adı tələb olunur")
-    
+
     # Create user
     user_id = str(uuid.uuid4())
     user_doc = {
@@ -395,42 +413,58 @@ async def register(user_data: UserRegister):
         "store_name": user_data.store_name if user_data.role == "vendor" else None,
         "created_at": datetime.now(timezone.utc).isoformat()
     }
-    await users_collection.insert_one(user_doc)
-    
+
+    # 🔍 DEBUG PRINTLƏR (HAMISI FUNKSİYA İÇİNDƏ)
+    print("🟢 INSERTING USER TO MONGO")
+    print("🟢 COLLECTION:", users_collection.name)
+    print("🟢 DB:", users_collection.database.name)
+    print("🟢 USER DOC:", user_doc)
+
+    # ✅ INSERT
+    result = await users_collection.insert_one(user_doc)
+    print("✅ USER INSERTED, ID:", result.inserted_id)
+
     # Create JWT token
     token = create_jwt_token(user_id, user_data.email, user_data.role)
-    
-    user_response = UserResponse(
-        id=user_id,
-        email=user_data.email,
-        role=user_data.role,
-        store_name=user_data.store_name
+
+    return AuthResponse(
+        token=token,
+        user=UserResponse(
+            id=user_id,
+            email=user_data.email,
+            role=user_data.role,
+            store_name=user_doc["store_name"]
+        )
     )
-    
-    return AuthResponse(token=token, user=user_response)
+
 
 @api_router.post("/auth/login", response_model=AuthResponse)
 async def login(login_data: UserLogin):
-    # Find user
-    user = await db.users.find_one({"email": login_data.email}, {"_id": 0})
+    user = await db.users.find_one({"email": login_data.email})
+
+    print("LOGIN USER RAW:", user)
+
     if not user:
         raise HTTPException(status_code=401, detail="Email və ya şifrə yanlışdır")
-    
-    # Verify password
+
+    print("HASH:", user.get("password_hash"))
+    print("TYPE:", type(user.get("password_hash")))
+
     if not verify_password(login_data.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Email və ya şifrə yanlışdır")
-    
-    # Create JWT token
+
     token = create_jwt_token(user["id"], user["email"], user["role"])
-    
-    user_response = UserResponse(
-        id=user["id"],
-        email=user["email"],
-        role=user["role"],
-        store_name=user.get("store_name")
-    )
-    
-    return AuthResponse(token=token, user=user_response)
+
+    return {
+        "token": token,
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "role": user["role"],
+            "store_name": user.get("store_name")
+        }
+    }
+
 
 @api_router.get("/auth/me", response_model=UserResponse)
 async def get_me(authorization: Optional[str] = Header(None)):

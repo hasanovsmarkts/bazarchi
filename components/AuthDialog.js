@@ -22,8 +22,10 @@ const AuthDialog = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  console.log("MODE:", mode);
+  console.log("FORM DATA:", formData);
 
-    console.log("SUBMIT CLICKED, MODE:", mode);
+   
 
     let success = false;
     if (mode === "login") {

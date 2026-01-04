@@ -205,29 +205,45 @@ function AppProvider({ children }) {
 }
 
 
-  const register = (email, password, role, storeName = '') => {
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
-    
-    if (users.find(u => u.email === email)) {
-      toast.error('Bu email artıq qeydiyyatdan keçib')
+const register = async (email, password, role, storeName = '') => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          role,
+          store_name: role === "vendor" ? storeName : null,
+        }),
+      }
+    )
+
+    if (!res.ok) {
+      const err = await res.text()
+      console.error(err)
+      toast.error("Qeydiyyat alınmadı")
       return false
     }
 
-    const newUser = {
-      id: Date.now().toString(),
-      email,
-      password,
-      role,
-      storeName: role === 'vendor' ? storeName : ''
-    }
+    const data = await res.json()
 
-    users.push(newUser)
-    localStorage.setItem('users', JSON.stringify(users))
-    setUser(newUser)
-    localStorage.setItem('user', JSON.stringify(newUser))
-    toast.success('Qeydiyyat tamamlandı!')
+    // ✅ TOKEN & USER
+    localStorage.setItem("token", data.token)
+    localStorage.setItem("user", JSON.stringify(data.user))
+    setUser(data.user)
+
+    toast.success("Qeydiyyat uğurla tamamlandı!")
     return true
+  } catch (err) {
+    console.error(err)
+    toast.error("Server xətası")
+    return false
   }
+}
+
 
   const logout = () => {
     setUser(null)
@@ -580,7 +596,7 @@ function AuthDialog({ mode, setMode, onClose }) {
             <>
               Artıq hesabınız var?{' '}
               <button
-                type="submit"
+                type="button"
                 onClick={() => setMode('login')}
                 className="text-orange-500 hover:underline"
               >
