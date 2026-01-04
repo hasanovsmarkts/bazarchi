@@ -38,7 +38,7 @@ const CartPage = () => {
           product_id: item.product_id,
           variant_id: item.variant_id,
           title: item.title,
-          price: item.price,
+          price: item.base_price,
           quantity: item.quantity,
           image: item.image,
         })),
@@ -108,7 +108,7 @@ const CartPage = () => {
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <img
-                        src={item.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'}
+                        src={item.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80'}
                         alt={item.title}
                         className="w-24 h-24 object-cover rounded border border-border"
                         data-testid="cart-item-image"
@@ -149,7 +149,7 @@ const CartPage = () => {
                             </Button>
                           </div>
                           <span className="font-bold text-accent" data-testid="cart-item-total">
-                            {(item.price * item.quantity).toFixed(2)} ₼
+                            {(item.base_price * item.quantity).toFixed(2)} ₼
                           </span>
                         </div>
                       </div>

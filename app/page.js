@@ -290,7 +290,7 @@ function AppProvider({ children }) {
         description: product.description || "",
 
         category: product.category,
-        base_price: Number(product.price || product.base_price),
+        base_price: Number(product.base_price || product.base_price),
         discount_price: product.discountPrice
           ? Number(product.discountPrice)
           : null,
@@ -651,11 +651,11 @@ function AuthDialog({ mode, setMode, onClose }) {
 // Product Card Component
 function ProductCard({ product, onViewDetails }) {
   const { addToCart } = useAppContext();
-  const discount = product.discountPrice
-    ? Math.round(
-        ((product.price - product.discountPrice) / product.price) * 100
-      )
-    : 0;
+  const discount = product.discount_price
+  ? Math.round(
+      ((product.base_price - product.discount_price) / product.base_price) * 100
+    )
+  : 0;
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
@@ -664,8 +664,9 @@ function ProductCard({ product, onViewDetails }) {
         onClick={() => onViewDetails(product)}
       >
         <img
-          src={product.image}
-          alt={product.title}
+            src={product.images?.[0] || "/placeholder.png"}
+  alt={product.title}
+
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
@@ -684,12 +685,12 @@ function ProductCard({ product, onViewDetails }) {
                 {product.discountPrice} ₼
               </span>
               <span className="text-sm text-gray-400 line-through">
-                {product.price} ₼
+                {product.base_price} ₼
               </span>
               <Badge className="bg-red-500 text-xs">-{discount}%</Badge>
             </>
           ) : (
-            <span className="text-lg font-bold">{product.price} ₼</span>
+            <span className="text-lg font-bold">{product.base_price} ₼</span>
           )}
         </div>
       </CardContent>
@@ -777,10 +778,10 @@ function ProductDetailPage() {
 
   if (!selectedProduct) return null;
 
-  const discount = selectedProduct.discountPrice
+  const discount = selectedProduct.discount_price
     ? Math.round(
-        ((selectedProduct.price - selectedProduct.discountPrice) /
-          selectedProduct.price) *
+        ((selectedProduct.base_price - selectedProduct.discount_price) /
+          selectedProduct.base_price) *
           100
       )
     : 0;
@@ -799,8 +800,8 @@ function ProductDetailPage() {
         <div className="grid md:grid-cols-2 gap-8 bg-white rounded-lg p-8">
           <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
             <img
-              src={selectedProduct.image}
-              alt={selectedProduct.title}
+            src={selectedProduct.images?.[0] || "/placeholder.png"}
+  alt={selectedProduct.title}
               className="w-full h-full object-cover"
             />
           </div>
@@ -817,13 +818,13 @@ function ProductDetailPage() {
             </div>
 
             <div className="flex items-baseline gap-3">
-              {selectedProduct.discountPrice ? (
+              {selectedProduct.discount_price ? (
                 <>
                   <span className="text-4xl font-bold text-orange-500">
-                    {selectedProduct.discountPrice} ₼
+                    {selectedProduct.discount_price} ₼
                   </span>
                   <span className="text-xl text-gray-400 line-through">
-                    {selectedProduct.price} ₼
+                    {selectedProduct.base_price} ₼
                   </span>
                   <Badge className="bg-red-500 text-lg px-3 py-1">
                     -{discount}%
@@ -831,7 +832,7 @@ function ProductDetailPage() {
                 </>
               ) : (
                 <span className="text-4xl font-bold">
-                  {selectedProduct.price} ₼
+                  {selectedProduct.base_price} ₼
                 </span>
               )}
             </div>
@@ -872,7 +873,9 @@ function CartPage() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const total = cart.reduce((sum, item) => {
-    const price = item.discountPrice || item.price;
+    const price = item.discount_price || item.base_price
+item.discount_price
+;
     return sum + price * item.quantity;
   }, 0);
 
@@ -912,8 +915,8 @@ function CartPage() {
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <img
-                        src={item.image}
-                        alt={item.title}
+                         src={item.images?.[0] || "/placeholder.png"}
+  alt={item.title}
                         className="w-24 h-24 object-cover rounded"
                       />
                       <div className="flex-1">
@@ -946,7 +949,7 @@ function CartPage() {
                             </Button>
                           </div>
                           <span className="font-bold text-orange-500">
-                            {(item.discountPrice || item.price) * item.quantity}{" "}
+                            {(item.discount_price || item.base_price) * item.quantity}{" "}
                             ₼
                           </span>
                         </div>
@@ -1045,14 +1048,14 @@ function VendorDashboard() {
   const handleAddProduct = (e) => {
     e.preventDefault();
 
-    if (!newProduct.title || !newProduct.price) {
+    if (!newProduct.title || !newProduct.base_price) {
       toast.error("Məhsul adı və qiyməti daxil edin");
       return;
     }
 
  addProduct({
   title: newProduct.title,
-  price: parseFloat(newProduct.price),
+  price: parseFloat(newProduct.base_price),
   discountPrice: newProduct.discountPrice
     ? parseFloat(newProduct.discountPrice)
     : null,
@@ -1069,7 +1072,7 @@ function VendorDashboard() {
       price: "",
       discountPrice: "",
       category: "Elektronika",
-      image: "",
+      images: [],
     });
     setIsAddingProduct(false);
   };
@@ -1118,8 +1121,8 @@ function VendorDashboard() {
                   <Card key={product._id}>
                     <div className="aspect-square overflow-hidden bg-gray-100">
                       <img
-                        src={product.image}
-                        alt={product.title}
+                        src={product.images?.[0] || "/placeholder.png"}
+  alt={product.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -1136,11 +1139,11 @@ function VendorDashboard() {
                                 {product.discountPrice} ₼
                               </span>
                               <span className="text-sm text-gray-400 line-through ml-2">
-                                {product.price} ₼
+                                {product.base_price} ₼
                               </span>
                             </>
                           ) : (
-                            <span className="font-bold">{product.price} ₼</span>
+                            <span className="font-bold">{product.base_price} ₼</span>
                           )}
                         </div>
                         <Button
@@ -1184,7 +1187,7 @@ function VendorDashboard() {
                         type="number"
                         required
                         step="0.01"
-                        value={newProduct.price}
+                        value={newProduct.base_price}
                         onChange={(e) =>
                           setNewProduct({
                             ...newProduct,

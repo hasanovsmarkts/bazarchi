@@ -54,8 +54,10 @@ const ProductPage = () => {
   if (!product) return null;
 
   const discount = product.discount_price
-    ? Math.round(((product.base_price - product.discount_price) / product.base_price) * 100)
-    : 0;
+  ? Math.round(
+      ((product.base_price - product.discount_price) / product.base_price) * 100
+    )
+  : 0;
 
   const displayPrice = selectedVariant ? selectedVariant.price : (product.discount_price || product.base_price);
 

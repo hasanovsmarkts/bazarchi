@@ -410,7 +410,7 @@ const [newProduct, setNewProduct] = useState(EMPTY_PRODUCT);
                             {order.items.map((item, idx) => (
                               <div key={idx} className="flex justify-between text-sm mb-1">
                                 <span>{item.title} x{item.quantity}</span>
-                                <span>{(item.price * item.quantity).toFixed(2)} ₼</span>
+                                <span>{(item.base_price * item.quantity).toFixed(2)} ₼</span>
                               </div>
                             ))}
                           </div>
