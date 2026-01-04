@@ -1048,10 +1048,10 @@ function VendorDashboard() {
   const handleAddProduct = (e) => {
     e.preventDefault();
 
-   if (!newProduct.title.trim() || isNaN(price) || price <= 0) {
+  if (!newProduct.title.trim() || isNaN(basePrice) || basePrice <= 0) {
     toast.error("Məhsul adı və qiyməti düzgün daxil edin");
     return;
-    }
+  }
 
  addProduct({
   title: newProduct.title,
