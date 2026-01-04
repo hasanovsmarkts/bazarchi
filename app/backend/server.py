@@ -136,7 +136,7 @@ class Product(BaseModel):
     category: str
     base_price: float
     discount_price: Optional[float] = None
-    images: List[str] = []
+    images: List[str] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     is_fake: bool = False
 

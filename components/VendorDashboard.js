@@ -35,15 +35,22 @@ const VendorDashboard = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [newProduct, setNewProduct] = useState({
-    title: '',
-    description: '',
-    base_price: '',
-    discount_price: '',
-    category: 'Elektronika',
-    images: [''],
-    stock: '',
-  });
+ const EMPTY_PRODUCT = {
+  title: "",
+  description: "",
+  category: "Elektronika",
+
+  base_price: 0,
+  discount_price: null,
+
+  images: [],
+
+  stock: 0
+};
+
+const [newProduct, setNewProduct] = useState(EMPTY_PRODUCT);
+
+
 
   const CATEGORIES = ['Elektronika', 'Geyim və Ayaqqabı', 'Ev və Bağ', 'İdman', 'Kitab', 'Oyuncaq'];
 
@@ -97,15 +104,7 @@ const VendorDashboard = () => {
       await productsAPI.create(productData);
       toast.success('Məhsul əlavə edildi!');
       setIsAddDialogOpen(false);
-      setNewProduct({
-        title: '',
-        description: '',
-        base_price: '',
-        discount_price: '',
-        category: 'Elektronika',
-        images: [''],
-        stock: '',
-      });
+     setNewProduct(EMPTY_PRODUCT);
       loadVendorData();
       loadProducts();
     } catch (err) {
@@ -154,7 +153,11 @@ const VendorDashboard = () => {
   };
 
   const openEditDialog = (product) => {
-    setEditingProduct({ ...product });
+   setEditingProduct({
+  ...product,
+  images: (product.images || []).filter(Boolean)
+});
+
     setIsEditDialogOpen(true);
   };
 
@@ -520,7 +523,10 @@ const ProductForm = ({ product, setProduct, onSubmit, title, categories }) => {
               step="0.01"
               min="0"
               value={product.base_price}
-              onChange={(e) => setProduct({ ...product, base_price: e.target.value })}
+            onChange={(e) =>
+  setProduct({ ...product, base_price: Number(e.target.value) })
+}
+
               placeholder="299.99"
             />
           </div>
@@ -533,7 +539,13 @@ const ProductForm = ({ product, setProduct, onSubmit, title, categories }) => {
               step="0.01"
               min="0"
               value={product.discount_price}
-              onChange={(e) => setProduct({ ...product, discount_price: e.target.value })}
+             onChange={(e) =>
+  setProduct({
+    ...product,
+    discount_price: e.target.value ? Number(e.target.value) : null
+  })
+}
+
               placeholder="249.99"
             />
           </div>
@@ -546,7 +558,10 @@ const ProductForm = ({ product, setProduct, onSubmit, title, categories }) => {
               required
               min="0"
               value={product.stock}
-              onChange={(e) => setProduct({ ...product, stock: e.target.value })}
+              onChange={(e) =>
+  setProduct({ ...product, stock: Number(e.target.value) })
+}
+
               placeholder="100"
             />
           </div>
