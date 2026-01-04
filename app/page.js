@@ -1048,9 +1048,9 @@ function VendorDashboard() {
   const handleAddProduct = (e) => {
     e.preventDefault();
 
-    if (!newProduct.title || !newProduct.base_price) {
-      toast.error("Məhsul adı və qiyməti daxil edin");
-      return;
+   if (!newProduct.title.trim() || isNaN(price) || price <= 0) {
+    toast.error("Məhsul adı və qiyməti düzgün daxil edin");
+    return;
     }
 
  addProduct({
