@@ -294,7 +294,7 @@ function AppProvider({ children }) {
         discount_price: product.discount_price
           ? Number(product.discount_price)
           : null,
-        images: (product.images || []).filter(img => img.trim() !== ''),
+        images: (product.images || []).filter((img) => img.trim() !== ""),
 
         variants: [],
       }),
@@ -652,10 +652,11 @@ function AuthDialog({ mode, setMode, onClose }) {
 function ProductCard({ product, onViewDetails }) {
   const { addToCart } = useAppContext();
   const discount = product.discount_price
-  ? Math.round(
-      ((product.base_price - product.discount_price) / product.base_price) * 100
-    )
-  : 0;
+    ? Math.round(
+        ((product.base_price - product.discount_price) / product.base_price) *
+          100
+      )
+    : 0;
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
@@ -664,9 +665,8 @@ function ProductCard({ product, onViewDetails }) {
         onClick={() => onViewDetails(product)}
       >
         <img
-            src={product.images?.[0] || "/placeholder.png"}
-  alt={product.title}
-
+          src={product.images?.[0] || "/placeholder.png"}
+          alt={product.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
@@ -800,8 +800,8 @@ function ProductDetailPage() {
         <div className="grid md:grid-cols-2 gap-8 bg-white rounded-lg p-8">
           <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
             <img
-            src={selectedProduct.images?.[0] || "/placeholder.png"}
-  alt={selectedProduct.title}
+              src={selectedProduct.images?.[0] || "/placeholder.png"}
+              alt={selectedProduct.title}
               className="w-full h-full object-cover"
             />
           </div>
@@ -873,9 +873,8 @@ function CartPage() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const total = cart.reduce((sum, item) => {
-    const price = item.discount_price || item.base_price
-item.discount_price
-;
+    const price = item.discount_price || item.base_price;
+    item.discount_price;
     return sum + price * item.quantity;
   }, 0);
 
@@ -915,8 +914,8 @@ item.discount_price
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <img
-                         src={item.images?.[0] || "/placeholder.png"}
-  alt={item.title}
+                        src={item.images?.[0] || "/placeholder.png"}
+                        alt={item.title}
                         className="w-24 h-24 object-cover rounded"
                       />
                       <div className="flex-1">
@@ -949,7 +948,8 @@ item.discount_price
                             </Button>
                           </div>
                           <span className="font-bold text-orange-500">
-                            {(item.discount_price || item.base_price) * item.quantity}{" "}
+                            {(item.discount_price || item.base_price) *
+                              item.quantity}{" "}
                             ₼
                           </span>
                         </div>
@@ -1037,39 +1037,38 @@ function VendorDashboard() {
   const { user, myProducts, addProduct, deleteProduct, setCurrentPage } =
     useAppContext();
   const [isAddingProduct, setIsAddingProduct] = useState(false);
-const [newProduct, setNewProduct] = useState({
-  title: "",
-  base_price: "",         
-  discount_price: "",
-  category: "Elektronika",
-  images: [],
-});
+  const [newProduct, setNewProduct] = useState({
+    title: "",
+    base_price: "",
+    discount_price: "",
+    category: "Elektronika",
+    images: [],
+  });
 
+  const handleAddProduct = (e) => {
+    e.preventDefault();
 
- const handleAddProduct = (e) => {
-  e.preventDefault();
+    const basePrice = Number(newProduct.base_price);
 
-  const basePrice = Number(newProduct.base_price);
+    if (!newProduct.title.trim() || isNaN(basePrice) || basePrice <= 0) {
+      toast.error("Məhsul adı və qiyməti düzgün daxil edin");
+      return;
+    }
 
-  if (!newProduct.title.trim() || isNaN(basePrice) || basePrice <= 0) {
-    toast.error("Məhsul adı və qiyməti düzgün daxil edin");
-    return;
-  }
-
-  addProduct({
-    title: newProduct.title,
-    base_price: basePrice, // ✅ backend ilə eyni
-    discount_price:
-      newProduct.discount_price
+    addProduct({
+      title: newProduct.title,
+      base_price: basePrice, // ✅ backend ilə eyni
+      discount_price: newProduct.discount_price
         ? Number(newProduct.discount_price)
         : null,
-    category: newProduct.category,
-    images:
-      newProduct.images.length > 0
-        ? newProduct.images
-        : ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80']
-  })
-
+      category: newProduct.category,
+      images:
+        newProduct.images.length > 0
+          ? newProduct.images
+          : [
+              "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+            ],
+    });
 
     setNewProduct({
       title: "",
@@ -1126,7 +1125,7 @@ const [newProduct, setNewProduct] = useState({
                     <div className="aspect-square overflow-hidden bg-gray-100">
                       <img
                         src={product.images?.[0] || "/placeholder.png"}
-  alt={product.title}
+                        alt={product.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -1147,7 +1146,9 @@ const [newProduct, setNewProduct] = useState({
                               </span>
                             </>
                           ) : (
-                            <span className="font-bold">{product.base_price} ₼</span>
+                            <span className="font-bold">
+                              {product.base_price} ₼
+                            </span>
                           )}
                         </div>
                         <Button
@@ -1195,7 +1196,7 @@ const [newProduct, setNewProduct] = useState({
                         onChange={(e) =>
                           setNewProduct({
                             ...newProduct,
-                            price: e.target.value,
+                            base_price: e.target.value, // ✅ DÜZGÜN
                           })
                         }
                         placeholder="299.99"
