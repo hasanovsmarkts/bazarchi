@@ -82,35 +82,41 @@ const [newProduct, setNewProduct] = useState(EMPTY_PRODUCT);
     }
   };
 
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
-    const price = Number(newProduct.base_price);
-  if (!newProduct.title.trim() || isNaN(price) || price <= 0) {
+const handleAddProduct = async (e) => {
+  e.preventDefault();
+
+  const basePrice = Number(newProduct.base_price);
+
+  if (!newProduct.title.trim() || isNaN(basePrice) || basePrice <= 0) {
     toast.error("Məhsul adı və qiyməti düzgün daxil edin");
     return;
-    }
+  }
 
-    try {
-      const productData = {
-        title: newProduct.title,
-        description: newProduct.description || 'Məhsul təsviri',
-        base_price: parseFloat(newProduct.base_price),
-        discount_price: newProduct.discount_price ? parseFloat(newProduct.discount_price) : null,
-        category: newProduct.category,
-        images: newProduct.images.filter(img => img.trim() !== ''),
-        stock: parseInt(newProduct.stock) || 100,
-      };
+  try {
+    const productData = {
+      title: newProduct.title,
+      description: newProduct.description || "Məhsul təsviri",
+      base_price: basePrice,
+      discount_price:
+        newProduct.discount_price !== null
+          ? Number(newProduct.discount_price)
+          : null,
+      category: newProduct.category,
+      images: newProduct.images.filter((img) => img.trim() !== ""),
+      stock: Number(newProduct.stock) || 0,
+    };
 
-      await productsAPI.create(productData);
-      toast.success('Məhsul əlavə edildi!');
-      setIsAddDialogOpen(false);
-     setNewProduct(EMPTY_PRODUCT);
-      loadVendorData();
-      loadProducts();
-    } catch (err) {
-      toast.error(err.response?.data?.detail || 'Məhsul əlavə edilmədi');
-    }
-  };
+    await productsAPI.create(productData);
+    toast.success("Məhsul əlavə edildi!");
+    setIsAddDialogOpen(false);
+    setNewProduct(EMPTY_PRODUCT);
+    loadVendorData();
+    loadProducts();
+  } catch (err) {
+    toast.error(err.response?.data?.detail || "Məhsul əlavə edilmədi");
+  }
+};
+
 
   const handleEditProduct = async (e) => {
     e.preventDefault();

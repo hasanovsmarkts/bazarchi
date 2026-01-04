@@ -1037,34 +1037,38 @@ function VendorDashboard() {
   const { user, myProducts, addProduct, deleteProduct, setCurrentPage } =
     useAppContext();
   const [isAddingProduct, setIsAddingProduct] = useState(false);
-  const [newProduct, setNewProduct] = useState({
-    title: "",
-    price: "",
-    discount_price: "",
-    category: "Elektronika",
-    images: [],
-  });
+const [newProduct, setNewProduct] = useState({
+  title: "",
+  base_price: "",         
+  discount_price: "",
+  category: "Elektronika",
+  images: [],
+});
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
+
+ const handleAddProduct = (e) => {
+  e.preventDefault();
+
+  const basePrice = Number(newProduct.base_price);
 
   if (!newProduct.title.trim() || isNaN(basePrice) || basePrice <= 0) {
     toast.error("Məhsul adı və qiyməti düzgün daxil edin");
     return;
   }
 
- addProduct({
-  title: newProduct.title,
-  price: parseFloat(newProduct.base_price),
-  discount_price: newProduct.discount_price
-    ? parseFloat(newProduct.discount_price)
-    : null,
-  category: newProduct.category,
-  images:
-    newProduct.images.length > 0
-      ? newProduct.images
-      : ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80']
-})
+  addProduct({
+    title: newProduct.title,
+    base_price: basePrice, // ✅ backend ilə eyni
+    discount_price:
+      newProduct.discount_price
+        ? Number(newProduct.discount_price)
+        : null,
+    category: newProduct.category,
+    images:
+      newProduct.images.length > 0
+        ? newProduct.images
+        : ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80']
+  })
 
 
     setNewProduct({
